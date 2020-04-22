@@ -1,6 +1,6 @@
 from django.db import models
 
-class Posts(models.Model):
+class Post(models.Model):
     topic = models.TextField(verbose_name='Тема поста')
     author = models.ForeignKey('users.Teacher', on_delete=models.CASCADE, verbose_name="id пользователя")
     content = models.TextField(verbose_name='Текст поста')
@@ -12,8 +12,8 @@ class Posts(models.Model):
         verbose_name = 'Пост'
         verbose_name_plural = 'Посты'
 
-class Comments(models.Model):
-    post = models.ForeignKey('Chat', on_delete=models.CASCADE, verbose_name="id поста")
+class Comment(models.Model):
+    post = models.ForeignKey('Post', on_delete=models.CASCADE, verbose_name="id поста")
     author = models.ForeignKey('users.User', on_delete=models.CASCADE, verbose_name="id пользователя")
     content = models.TextField(verbose_name='Текст комментария')
     added_at = models.DateTimeField(verbose_name='Время отправки', null=False, auto_now=True)

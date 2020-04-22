@@ -10,7 +10,7 @@ class TeacherAdmin(admin.ModelAdmin):
     list_display=('id', 'user_id', 'subject_id')
     
 class StudentAdmin(admin.ModelAdmin):
-    list_display=('username', 'user_id', 'class_id')
+    list_display=('id', 'user_id', 'class_name_id')
 
 admin.site.register(User, UserAdmin)
 admin.site.register(Teacher, TeacherAdmin)

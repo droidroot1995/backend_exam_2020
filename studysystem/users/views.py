@@ -20,10 +20,13 @@ def create_user(request):
     
     
     if form.is_valid():
-        #user = User.save()
-        pass
-    
-    return None
+        user = form.save()
+        usr = {'id': user.id, 'username': user.username, 'first_name': user.first_name, 
+               'last_name': user.last_name, 'is_teacher': user.is_teacher}
+        
+        return JsonResponse({'user': usr})
+
+    return JsonResponse({'error': form.errors}, status=400)
     
     
 
@@ -33,12 +36,41 @@ def create_student(request):
     User = apps.get_model('users', 'User')
     Student = apps.get_model('users', 'Student')
     
+    form = StudentForm(request.POST)
+    
+    if form.is_valid():
+        student = Student.objects().filter(user_id=form.cleaned_data['user_id']).first()
+        
+        if student == None:
+            student = form.save()
+            
+        stud = {'id': student.id, 'user_id': student.user.id, 'class_name_id': student.class_name.id}
+            
+        return JsonResponse({'student': student})
+    
+    return JsonResponse({'error': form.errors}, status=400)
+    
+    
     
 @csrf_exempt
 @require_POST
 def create_teacher(request):
     User = apps.get_model('users', 'User')
     Teacher = apps.get_model('users', 'Student')
+    
+    form = TeacherForm(request.POST)
+    
+    if form.is_valid():
+        teacher = Teacher.objects().filter(user_id=form.cleaned_data['user_id']).first()
+        
+        if teacher == None:
+            teacher = form.save()
+            
+        teach = {'id': teacher.id, 'user_id': teacher.user.id, 'subject_id': teacher.subject.id}
+            
+        return JsonResponse({'teacher': teach})
+    
+    return JsonResponse({'error': form.errors}, status=400)
 
 
 @require_GET
@@ -53,10 +85,10 @@ def students_list(request):
     
     for s in students:
         user = User.objects().filter(id=s['user_id']).first()
-        s_class = Class.objects().filter(id=s['class_id'])
+        s_class = Class.objects().filter(id=s['class_name_id'])
         
-        student = {'id': s['id'], 'first_name': user['first_name'], 'last_name': user['last_name'],
-                   'class_number': s_class['parallel'], 'class_letter': s_class['letter']}
+        student = {'id': s.id, 'first_name': user.first_name, 'last_name': user.last_name,
+                   'class_number': s_class.parallel, 'class_letter': s_class.letter}
         
         result.append(student)
         
@@ -76,8 +108,8 @@ def teachers_list(request):
         user = User.objects().filter(id=t['user_id']).first()
         subject = Subject.objects().filter(id=t['subject_id'])
         
-        teacher = {'id': t['id'], 'first_name': user['first_name'], 'last_name': user['last_name'],
-                   'subject_name': subject['name'], 'subject_class': subject['class_name'].id}
+        teacher = {'id': t.id, 'first_name': user.first_name, 'last_name': user.last_name,
+                   'subject_name': subject.name, 'subject_class': subject.class_name.id}
         
         result.append(teacher)
         

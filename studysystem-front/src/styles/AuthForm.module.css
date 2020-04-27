@@ -1,0 +1,44 @@
+.container {
+    display: flex;
+    background: rgb(255, 166, 32);
+
+    min-width: 100%;
+    min-height:100%;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.login {
+    background: rgb(221, 221, 221);
+    width: fit-content;
+    height: fit-content;
+    border: 1px solid grey;
+    border-radius: 10px;
+    margin-left: 45%;
+    margin-top: 15%;
+}
+
+.input_field {
+    border: 1px solid grey;
+    size: 40;
+    height: 30px;
+    padding: 3px;
+    margin: 10px;
+}
+
+.submit_button {
+    position: relative;
+    border: 1px solid grey;
+    width: fit-content;
+    height: fit-content;
+    margin: 10px;
+    padding: 5px;
+    float: right;
+}
+
+.login_header {
+    position: relative;
+    float: center;
+    margin: 10px;
+    margin-left: 30%;
+}
